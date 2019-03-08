@@ -1,3 +1,4 @@
+@import "~@/sass/utils"
 @import "~@/sass/normalize"
 
 // Clarke
@@ -37,10 +38,53 @@
 
 // Body
 body
+  +mul(r)
+  color: $txt
+  font-size: 18px
+
   background: linear-gradient(to right,#090025 0,#2f0028 100%)
-  color: #dddbfe
 
 
 // Container
 .container
   padding: 0 3vw
+
+
+// Flex
+.flex
+  display: flex
+
+.flex-col
+  flex-direction: column
+
+.aic
+  align-items: center
+
+.aifs
+  align-items: flex-start
+
+.aife
+  align-items: flex-end
+
+.jcsb
+  justify-content: space-between
+
+.jcfe
+  justify-content: flex-end
+
+.h1
+  color: $ttl
+  +mul(m)
+  +ff('font-size', (1300px: 40px, 1900px: 64px))
+.h2
+  color: $ttl
+  +mul(m)
+  +ff('font-size', (1300px: 32px, 1900px: 56px))
+.h3
+  color: $ttl
+  +mul(m)
+  +ff('font-size', (1300px: 24px, 1900px: 40px))
+.h4
+  color: $ttl
+  +mul(r)
+  +ff('font-size', (1300px: 18px, 1900px: 24px))
