@@ -38,6 +38,7 @@
 
 // Body
 body
+  +scrollbar
   +mul(r)
   color: $txt
   font-size: 18px
@@ -47,8 +48,7 @@ body
 
 // Container
 .container
-  padding: 0 3vw
-
+  padding: 0 $pad
 
 // Flex
 .flex
@@ -60,10 +60,10 @@ body
 .aic
   align-items: center
 
-.aifs
+.ais
   align-items: flex-start
 
-.aife
+.aie
   align-items: flex-end
 
 .jcsb
@@ -75,16 +75,16 @@ body
 .h1
   color: $ttl
   +mul(m)
-  +ff('font-size', (1300px: 40px, 1900px: 64px))
+  +ff('font-size', (1300px: 44px, 1900px: 64px))
 .h2
   color: $ttl
   +mul(m)
-  +ff('font-size', (1300px: 32px, 1900px: 56px))
+  +ff('font-size', (1300px: 36px, 1900px: 56px))
 .h3
   color: $ttl
   +mul(m)
-  +ff('font-size', (1300px: 24px, 1900px: 40px))
+  +ff('font-size', (1300px: 28px, 1900px: 40px))
 .h4
   color: $ttl
   +mul(r)
-  +ff('font-size', (1300px: 18px, 1900px: 24px))
+  +ff('font-size', (1300px: 20px, 1900px: 24px))

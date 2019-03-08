@@ -56,8 +56,15 @@ export default {
 
   background: rgba($grey, 0.5)
 
-
 .input__text
+  font-size: 14px
+  color: $grey
+  
+  opacity: 0.5
+
+  display: inline-block
+  padding-top: 8px
+
 </style>
 
 

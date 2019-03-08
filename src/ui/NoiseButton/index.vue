@@ -2,9 +2,10 @@
   <button
     :class="['noise-button', {'active': canvasCompleted }]"
     :style="{ width: `${w}px`, height: `${h}px` }"
+    @click="$emit('click')"
     @mouseenter="play"
   >
-    <span class="noise-button__text">
+    <span :class="['noise-button__text', { 'dark': darkText }]">
       <slot></slot>
     </span>
   </button>
@@ -30,9 +31,13 @@ const options = {
 export default {
   name: "NoiseButton",
   props: {
-    color: {
-      type: String,
-      default: "0xb836c6"
+    grey: {
+      type: Boolean,
+      default: false
+    },
+    "dark-text": {
+      type: Boolean,
+      default: false
     },
     w: {
       type: [String, Number]
@@ -49,11 +54,12 @@ export default {
       autoStart: false,
       autoResize: true,
       transparent: true
-    })
+    }),
+    borderColor: 0xb836c6
   }),
   mounted() {
-    // Set color from props
-    options.borderColor = this.color;
+    // Border color
+    this.borderColor = this.grey ? 0xc5c5c5 : 0xb836c6;
 
     // Compute polygon size
     options.polygon = `${this.$el.offsetHeight * 0.4}, 0, ${this.$el
@@ -177,7 +183,7 @@ export default {
         [0, points[0]]
       ];
 
-      graphics.lineStyle(options.borderWidth, options.borderColor);
+      graphics.lineStyle(options.borderWidth, this.borderColor);
 
       graphics.beginFill(
         options.backgroundColor,
@@ -294,6 +300,8 @@ export default {
 </script>
 
 <style lang="sass" scoped>
+@import "~@/sass/utils"
+
 .noise-button
   position: relative
 
@@ -301,8 +309,8 @@ export default {
   align-items: center
   justify-content: center
 
-  width: 282px
-  height: 80px
+  width: 290px
+  height: 67px
 
   opacity: 0
   pointer-events: none
@@ -312,7 +320,14 @@ export default {
   pointer-events: auto
 
 .noise-button__text
+  color: $ttl
+  +mul(b)
+  font-size: 14px
+  letter-spacing: 0.1em
   text-transform: uppercase
+
+.noise-button__text.dark
+  color: $grey
 
 .noise-button /deep/ canvas
   z-index: 1
