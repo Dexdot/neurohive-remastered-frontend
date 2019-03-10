@@ -1,125 +1,156 @@
 <template>
-  <section class="signup container">
-    <h1 class="h2">Подать заявку</h1>
-    <h2 class="h4">Заявка — еще не участие</h2>
-    <div class="flex">
+  <div class="signup">
+    <Header dark />
+    <section class="signup__container container">
+      <h1 class="h2">Подать заявку</h1>
+      <h2 class="h4">Заявка — еще не участие</h2>
+      <div class="flex">
 
-      <div class="signup__info">
-        <ul class="signup__rules">
-          <li
-            class="flex ais"
-            v-for="(rule, i) in rules"
-            :key="i"
-          >
-            <img
-              :src="require('./list-icon.png')"
-              role="presentation"
+        <div class="signup__info">
+          <ul class="signup__rules">
+            <li
+              class="flex ais"
+              v-for="(rule, i) in rules"
+              :key="i"
             >
-            <p v-html="rule">
-            </p>
-          </li>
-        </ul>
+              <img
+                :src="require('./list-icon.png')"
+                role="presentation"
+              >
+              <p v-html="rule">
+              </p>
+            </li>
+          </ul>
 
-        <NoiseButton
-          @click="$router.push('/faq')"
-          w="224"
-          grey
-          dark-text
-        >F.A.Q</NoiseButton>
-      </div>
+          <NoiseButton
+            @click="$router.push('/faq')"
+            w="224"
+            grey
+            dark-text
+          >F.A.Q</NoiseButton>
+        </div>
 
-      <form
-        class="signup__form"
-        @submit.prevent="submit"
-      >
-        <YoInput
-          type="text"
-          placeholder="Имя"
-          v-model="name"
+        <form
+          novalidate
+          class="signup__form"
+          @submit.prevent="submit"
         >
-          Заявку подает один человек, даже если участвует команда
-        </YoInput>
-        <YoInput
-          type="text"
-          placeholder="Контакт в телеграме"
-          v-model="telegram"
-        >
-          Мы напишем вам, если в заявке чего-то не хватает
-        </YoInput>
-        <YoInput
-          type="email"
-          placeholder="Почта"
-          v-model="email"
-        >
-          Мы напишем вам, если в заявке чего-то не хватает
-        </YoInput>
-        <YoInput
-          type="text"
-          placeholder="Название проекта"
-          v-model="projectName"
-        >
-          Например, «Приложение, которое создает рецепты блюд по фотографиям еды»
-        </YoInput>
-        <YoInput
-          type="text"
-          placeholder="Краткое описание проекта"
-          v-model="projectDescription"
-        >
-          Два-три предложения о том, как будет работать ваш продукт
-        </YoInput>
-
-        <h3>Состав команды</h3>
-
-        <ul class="signup__team">
-          <li
-            :key="mate.id"
-            v-for="(mate, i) in team"
+          <YoInput
+            type="email"
+            placeholder="Почта"
+            v-model="email"
+            :valid="validEmail"
           >
-            <div class="signup__mate">
-              <span>{{ mateIndex(i) }}.</span>
-              <button
-                v-if="i > 0"
-                @click="removeMate(i)"
-              >Удалить участника</button>
-            </div>
-            <YoInput
-              type="text"
-              placeholder="Имя"
-              v-model="mate.name"
-            />
-            <YoInput
-              type="text"
-              placeholder="Роль"
-              v-model="mate.role"
-            />
-          </li>
-        </ul>
+            Мы напишем вам, если в заявке чего-то не хватает
+          </YoInput>
+          <YoInput
+            type="password"
+            placeholder="Пароль"
+            v-model="password"
+            :valid="validPassword"
+          >
+            Не менее: 8 символов, 1 прописной, 1 цифры
+          </YoInput>
+          <YoInput
+            type="text"
+            placeholder="Имя"
+            v-model="name"
+            :valid="name.length > 1"
+          >
+            Заявку подает один человек, даже если участвует команда
+          </YoInput>
+          <YoInput
+            type="text"
+            placeholder="Контакт в телеграме"
+            v-model="telegram"
+            :valid="telegram.length > 1"
+          >
+            Мы напишем вам, если в заявке чего-то не хватает
+          </YoInput>
+          <YoInput
+            type="text"
+            placeholder="Название проекта"
+            v-model="projectName"
+            :valid="projectName.length > 1"
+          >
+            Например, «Приложение, которое создает рецепты блюд по фотографиям еды»
+          </YoInput>
+          <YoInput
+            type="text"
+            placeholder="Краткое описание проекта"
+            v-model="projectDescription"
+            :valid="projectDescription.length > 1"
+          >
+            Два-три предложения о том, как будет работать ваш продукт
+          </YoInput>
 
-        <AddButton @click="addMate">Добавить участника</AddButton>
+          <h3>Состав команды</h3>
 
-        <NoiseButton dark-text>Отправить</NoiseButton>
+          <ul class="signup__team">
+            <li
+              :key="mate.id"
+              v-for="(mate, i) in team"
+            >
+              <div class="signup__mate">
+                <span>{{ indexMate(i) }}.</span>
+                <button
+                  v-if="i > 0"
+                  @click="removeMate(i)"
+                  type="button"
+                >Удалить участника</button>
+              </div>
+              <YoInput
+                type="text"
+                placeholder="Имя"
+                v-model="mate.name"
+                :valid="mate.name.length > 1"
+              />
+              <YoInput
+                type="text"
+                placeholder="Роль"
+                v-model="mate.role"
+                :valid="mate.role.length > 1"
+              />
+            </li>
+          </ul>
 
-        <CheckBox checked>Согласен на обработку персональных данных</CheckBox>
+          <AddButton
+            type="button"
+            @click="addMate"
+          >Добавить участника</AddButton>
 
-        <p>Мы получили вашу заявку. В течение 1-2 дней мы пришлем вам ссылку на личный кабинет или напишем вам в Телеграме.</p>
-      </form>
+          <CheckBox v-model="checked">Согласен на обработку персональных данных</CheckBox>
 
-    </div>
-  </section>
+          <NoiseButton
+            type="submit"
+            dark-text
+          >Отправить</NoiseButton>
+
+          <p>Мы получили вашу заявку. В течение 1-2 дней мы пришлем вам ссылку на личный кабинет или напишем вам в Телеграме.</p>
+        </form>
+
+      </div>
+    </section>
+  </div>
 </template>
 
 <script>
+import Header from "@/Header";
 import YoInput from "@/ui/YoInput";
 import NoiseButton from "@/ui/NoiseButton";
 import AddButton from "@/ui/AddButton";
 import CheckBox from "@/ui/CheckBox";
+
+import { auth } from "@/validate-auth";
 
 // Unique id for :key
 let id = 0;
 
 export default {
   name: "Signup",
+  mixins: [auth],
   components: {
+    Header,
     YoInput,
     NoiseButton,
     AddButton,
@@ -134,20 +165,69 @@ export default {
     ],
     name: "",
     telegram: "",
-    email: "",
     projectName: "",
     projectDescription: "",
-    team: [{ name: "", role: "" }]
+    team: [{ name: "", role: "" }],
+    checked: ""
   }),
+  computed: {
+    validFields() {
+      return [
+        this.name,
+        this.telegram,
+        this.projectName,
+        this.projectDescription
+      ].every(v => v.length > 1);
+    },
+    validTeam() {
+      return this.team.every(
+        mate => mate.name.length > 1 && mate.role.length > 1
+      );
+    },
+    valid() {
+      return (
+        this.validEmail &&
+        this.validPassword &&
+        this.validFields &&
+        this.validTeam &&
+        this.checked
+      );
+    }
+  },
   methods: {
-    submit() {},
+    async submit() {
+      if (this.valid) {
+        const {
+          email,
+          password,
+          name,
+          telegram,
+          projectName,
+          projectDescription,
+          team
+        } = this;
+
+        const data = {
+          email,
+          password,
+          name,
+          telegram,
+          projectName,
+          projectDescription,
+          team
+        };
+
+        const resp = await this.$store.dispatch("signup", data);
+        this.$router.push("/");
+      }
+    },
     addMate() {
       this.team.push({ name: "", role: "", id: id++ });
     },
     removeMate(i) {
       this.team = this.team.filter((v, index) => index !== i);
     },
-    mateIndex(i) {
+    indexMate(i) {
       const index = i + 1;
       return index < 10 ? `0${index}` : `${index}`;
     }
@@ -171,8 +251,16 @@ export default {
 
 // Signup
 .signup
-  padding-top: 5%
-  padding-bottom: 5%
+  color: $grey
+  background: #f3f3f3
+
+  padding-top: 10%
+  padding-bottom: 8%
+
+  @media (max-width: 1440px)
+    padding-top: 12%
+
+.signup__container
   margin: 0 auto
   max-width: calc(#{1300px} + #{$pad} * 2)
 
@@ -208,6 +296,8 @@ export default {
   margin-bottom: 8px
 
   font-size: 14px
+  opacity: 0.6
+
 .signup__mate button
   color: $lt
   margin-left: auto
@@ -235,12 +325,3 @@ export default {
   margin-bottom: 32px
 
 </style>
-
-<style lang="sass">
-@import "~@/sass/utils"
-
-body
-  color: $grey
-  background: #f3f3f3
-</style>
-

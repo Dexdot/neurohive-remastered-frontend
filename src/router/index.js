@@ -1,6 +1,8 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 
+import { isLogged, isNotLogged } from './auth-guard';
+
 Vue.use(Router);
 
 export default new Router({
@@ -9,18 +11,22 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'hero',
       component: () => import(`@/Hero`)
     },
     {
       path: '/signin',
-      name: 'signin',
-      component: () => import(`@/Signin`)
+      component: () => import(`@/Signin`),
+      beforeEnter: isNotLogged
     },
     {
-      path: '/signup',
-      name: 'signup',
-      component: () => import(`@/Signup`)
+      path: '/form',
+      component: () => import(`@/Signup`),
+      beforeEnter: isNotLogged
+    },
+    {
+      path: '/signout',
+      component: () => import(`@/Signout`),
+      beforeEnter: isLogged
     }
   ]
 });

@@ -13,7 +13,8 @@ export default {
   name: "GlitchLink",
   props: {
     to: String,
-    text: String
+    text: String,
+    color: String
   },
   data: () => ({
     pool: "!<>-_\\/[]{}—=+*^?#________",
@@ -29,7 +30,8 @@ export default {
     // Задаем размеры, чтобы не прыгало
     this.size = {
       width: `${this.$el.offsetWidth}px`,
-      height: `${this.$el.offsetHeight}px`
+      height: `${this.$el.offsetHeight}px`,
+      color: this.color || ""
     };
   },
   methods: {
@@ -61,6 +63,28 @@ export default {
     reset() {
       this.textContent = this.text;
       window.clearInterval(this.interval);
+    },
+    update(text = this.text) {
+      this.textContent = text;
+
+      // Reset width / height
+      this.size = {
+        color: this.color || ""
+      };
+
+      // Set it again
+      setTimeout(() => {
+        this.size = {
+          width: `${this.$el.offsetWidth}px`,
+          height: `${this.$el.offsetHeight}px`,
+          color: this.color || ""
+        };
+      }, 10);
+    }
+  },
+  watch: {
+    text(text) {
+      this.update(text);
     }
   }
 };

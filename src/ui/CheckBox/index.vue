@@ -2,10 +2,8 @@
   <label class="checkbox">
     <input
       type="checkbox"
-      :name="name"
-      :checked="checked"
-      @change="$emit('change')"
-      @input="$emit('input', $event.target.value)"
+      :checked="value"
+      @input="$emit('input', $event.target.checked)"
     >
     <span class="checkbox__rect">
       <img
@@ -29,11 +27,11 @@
 <script>
 export default {
   name: "CheckBox",
-  props: {
-    checked: { type: Boolean, default: false },
-    name: String,
-    value: {}
-  }
+  props: ["value"]
+  // props: {
+  //   checked: { type: Boolean, default: false },
+  //   value: {}
+  // }
 };
 </script>
 

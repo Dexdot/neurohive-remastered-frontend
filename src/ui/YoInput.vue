@@ -1,5 +1,5 @@
 <template>
-  <div class="input">
+  <div :class="['input', { 'input--valid': valid } ]">
     <input
       :type="type"
       :placeholder="placeholder"
@@ -22,7 +22,10 @@ export default {
       required: true,
       default: "text"
     },
-    placeholder: String
+    placeholder: String,
+    valid: {
+      type: Boolean
+    }
   }
 };
 </script>
@@ -43,6 +46,9 @@ export default {
   +mul(r)
   font-size: 16px
   color: $grey
+
+  transition: color $trs
+
 .input input::placeholder
   color: $grey
 
@@ -54,6 +60,7 @@ export default {
   width: 100%
   height: 1px
 
+  transition: background $trs
   background: rgba($grey, 0.5)
 
 .input__text
@@ -64,6 +71,13 @@ export default {
 
   display: inline-block
   padding-top: 8px
+
+// Valid
+.input--valid
+  input
+    color: $lt
+  .input__line
+    background: rgba($lt, 0.5)
 
 </style>
 

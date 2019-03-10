@@ -6,7 +6,13 @@
 
 <script>
 export default {
-  name: "App"
+  name: "App",
+  created() {
+    const token = localStorage.getItem("token");
+    if (token) {
+      this.$store.dispatch("autoSignin", token);
+    }
+  }
 };
 </script>
 
