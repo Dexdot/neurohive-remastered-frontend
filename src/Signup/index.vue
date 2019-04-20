@@ -1,7 +1,7 @@
 <template>
-  <div class="signup">
+  <section class="signup">
     <Header dark />
-    <section class="signup__container container">
+    <div class="signup__container container">
       <h1 class="h2">Подать заявку</h1>
       <h2 class="h4">Заявка — еще не участие</h2>
       <div class="flex">
@@ -130,8 +130,8 @@
         </form>
 
       </div>
-    </section>
-  </div>
+    </div>
+  </section>
 </template>
 
 <script>
